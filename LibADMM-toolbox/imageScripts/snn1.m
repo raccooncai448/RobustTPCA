@@ -4,7 +4,7 @@ opts.mu = 1e-6;
 opts.rho = 1.1;
 opts.max_iter = 500;
 opts.DEBUG = 1;
-imageDir = '/MATLAB Drive/LibADMM-toolbox/images'; % Replace with the path to your images
+imageDir = '../images'; % Replace with the path to your images
 imageFiles = dir(fullfile(imageDir, '*.jpg')); % Change the file extension if necessary
 numImages = numel(imageFiles);
 images = cell(1, numImages);
@@ -24,7 +24,7 @@ for i = 1:numImages
     imageTensor = reshape(images{i}, size(images{i}, 1), size(images{i}, 2), 1);
     imageTensor = double(imageTensor);
     
-    r = 20;
+    r = 30;
     p = 0.25;
     omega = find(rand(height*width,1)>p);
 
@@ -41,7 +41,7 @@ for i = 1:numImages
     psnr_denoised = psnr_denoised + psnr(imageTensor, Xhat);
     
     
-    outputDir = '/MATLAB Drive/LibADMM-toolbox/imageResults/rsnn1';
+    outputDir = '../imageResults/rsnn1';
     % Check if the output directory exists, if not, create it
     if ~exist(outputDir, 'dir')
         mkdir(outputDir);
@@ -79,7 +79,7 @@ hold off;
 
 
 % Save the plot in the specified directory
-saveDir = 'imageResults/plots';
+saveDir = '../imageResults/plots';
 
 % Check if the directory exists, and create it if not
 if ~exist(saveDir, 'dir')

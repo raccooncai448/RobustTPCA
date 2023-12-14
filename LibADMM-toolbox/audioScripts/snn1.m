@@ -4,7 +4,7 @@ opts.mu = 1e-6;
 opts.rho = 1.1;
 opts.max_iter = 500;
 opts.DEBUG = 1;
-imageDir = '../images'; % Replace with the path to your images
+imageDir = '/MATLAB Drive/LibADMM-toolbox/images'; % Replace with the path to your images
 imageFiles = dir(fullfile(imageDir, '*.jpg')); % Change the file extension if necessary
 numImages = numel(imageFiles);
 images = cell(1, numImages);
@@ -24,16 +24,16 @@ for i = 1:numImages
     imageTensor = reshape(images{i}, size(images{i}, 1), size(images{i}, 2), 1);
     imageTensor = double(imageTensor);
     
-    r = 200;
+    r = 20;
     p = 0.25;
     omega = find(rand(height*width,1)>p);
 
     M = randn(height,width,1);
     M = 255 * (M - min(M(:))) / (max(M(:)) - min(M(:)));
     M(omega) = imageTensor(omega);
-    lambda = 1/sqrt(numImages*max(height,width));
+    lambda = [0.5 0.5 0.5];
     
-    [Xhat,Shat,obj,err,iter,errArr,iterArr] = trpca_tnn(M,lambda,opts);
+    [Xhat,Shat,err,iter,errArr,iterArr] = trpca_snn(M,lambda,opts);
     totalErr = totalErr + err;
     totalIter = totalIter + iter;
     RSE = RSE + norm(imageTensor-Xhat)/norm(imageTensor);
@@ -41,7 +41,7 @@ for i = 1:numImages
     psnr_denoised = psnr_denoised + psnr(imageTensor, Xhat);
     
     
-    outputDir = '../imageResults/trpca1';
+    outputDir = '/MATLAB Drive/LibADMM-toolbox/imageResults/rsnn1';
     % Check if the output directory exists, if not, create it
     if ~exist(outputDir, 'dir')
         mkdir(outputDir);
@@ -79,11 +79,11 @@ hold off;
 
 
 % Save the plot in the specified directory
-saveDir = '../imageResults/plots';
+saveDir = '/MATLAB Drive/LibADMM-toolbox/imageResults/plots';
 
 % Check if the directory exists, and create it if not
 if ~exist(saveDir, 'dir')
     mkdir(saveDir);
 end
 
-saveas(gcf, fullfile(saveDir, 'trpca1_plot.png'));
+saveas(gcf, fullfile(saveDir, 'snn1_plot.png'));

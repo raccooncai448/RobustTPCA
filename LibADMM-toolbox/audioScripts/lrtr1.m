@@ -8,7 +8,7 @@ opts.DEBUG = 1;
 
 
 %% 7: low-rank tensor recovery from Gaussian measurements based on tensor nuclear norm minimization (lrtr_Gaussian_tnn)
-imageDir = '../images'; % Replace with the path to your images
+imageDir = '/MATLAB Drive/LibADMM-toolbox/images'; % Replace with the path to your images
 imageFiles = dir(fullfile(imageDir, '*.jpg')); % Change the file extension if necessary
 numImages = numel(imageFiles);
 
@@ -38,7 +38,7 @@ Xsize.n3 = numImages;
 
 [Xhat,obj,err,iter,errArr,iterArr]  = lrtr_Gaussian_tnn(A,b,Xsize,opts);
 
-outputDir = '../imageResults/lrtr1';
+outputDir = 'imageResults/lrtr1';
 % Check if the output directory exists, if not, create it
 if ~exist(outputDir, 'dir')
     mkdir(outputDir);

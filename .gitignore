@@ -1,5 +1,13 @@
 LibADMM-toolbox/images/*
 LibADMM-toolbox/imageResults/*
 LibADMM-toolbox/imageScripts/imageResults/*
+LibADMM-toolbox/audio/*
+LibADMM-toolbox/audioResults/*
+LibADMM-toolbox/faces/*
+LibADMM-toolbox/faceResults/*
+LibADMM-toolbox/video/*
+LibADMM-toolbox/videoResults/*
+LibADMM-toolbox/videoTensor/*
 data/*
 scripts/images/*
+scripts/noisy/*

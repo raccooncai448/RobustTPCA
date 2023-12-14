@@ -7,8 +7,8 @@ opts.max_iter = 500;
 opts.DEBUG = 1;
 
 
-%% 7: low-rank tensor recovery from Gaussian measurements based on tensor nuclear norm minimization (lrtr_Gaussian_tnn)
-imageDir = '../images'; % Replace with the path to your images
+%% 2: low-rank tensor completion based on sum of nuclear norm minimization (lrtc_snn) 
+imageDir = '/MATLAB Drive/LibADMM-toolbox/images'; % Replace with the path to your images
 imageFiles = dir(fullfile(imageDir, '*.jpg')); % Change the file extension if necessary
 numImages = numel(imageFiles);
 
@@ -25,20 +25,15 @@ for i = 1:numImages
     imageTensor(:, :, i) = images{i};
 end
 
-r = 0.2*height; % tubal rank
+p = 0.5;
+omega = find(rand(height*width*numImages,1)<p);
+M = zeros(height, width, numImages);
+M(omega) = imageTensor(omega);
 
-m = int32(3*r*(height+width-r)*numImages+1); % number of measurements
-n = height*width*numImages;
-A = randn(m,n)/sqrt(m);
+lambda = [1 1 1];
+[Xhat,err,iter,errArr,iterArr] = lrtc_snn(M,omega,lambda,opts);
 
-b = A*imageTensor(:);
-Xsize.n1 = height;
-Xsize.n2 = width;
-Xsize.n3 = numImages;
-
-[Xhat,obj,err,iter,errArr,iterArr]  = lrtr_Gaussian_tnn(A,b,Xsize,opts);
-
-outputDir = '../imageResults/lrtr1';
+outputDir = 'imageResults/snn2';
 % Check if the output directory exists, if not, create it
 if ~exist(outputDir, 'dir')
     mkdir(outputDir);
@@ -77,7 +72,10 @@ if ~exist(saveDir, 'dir')
     mkdir(saveDir);
 end
 
-saveas(gcf, fullfile(saveDir, 'lrtr1_plot.png'));
+saveas(gcf, fullfile(saveDir, 'snn2_plot.png'));
 
-RSE = norm(Xhat(:)-X(:))/norm(X(:))
-trank = tubalrank(Xhat)
+err
+iter
+
+RSE = norm(imageTensor(:)-Xhat(:))/norm(imageTensor(:))
+
